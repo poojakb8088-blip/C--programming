@@ -1,0 +1,201 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 100
+
+struct Product {
+    int id;
+    char name[50];
+    float price;
+    int quantity;
+};
+
+int main() {
+    struct Product p[MAX];
+    int n = 0;
+    int choice, i, id, found;
+    int quantity;
+    float total;
+
+    while (1) {
+        printf("\n========== PRODUCT AVAILABILITY SYSTEM ==========\n");
+        printf("1. Add Product\n");
+        printf("2. Display All Products\n");
+        printf("3. Search Product\n");
+        printf("4. Check Product Availability\n");
+        printf("5. Update Product Stock\n");
+        printf("6. Calculate Total Stock Value\n");
+        printf("7. Exit\n");
+        printf("=================================================\n");
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+
+            case 1:
+                if (n >= MAX) {
+                    printf("Product storage is full!\n");
+                    break;
+                }
+
+                printf("\nEnter Product ID: ");
+                scanf("%d", &p[n].id);
+
+                printf("Enter Product Name: ");
+                scanf(" %[^\n]", p[n].name);
+
+                printf("Enter Product Price: ");
+                scanf("%f", &p[n].price);
+
+                printf("Enter Product Quantity: ");
+                scanf("%d", &p[n].quantity);
+
+                n++;
+
+                printf("\nProduct added successfully!\n");
+                break;
+
+            case 2:
+                if (n == 0) {
+                    printf("\nNo products available.\n");
+                    break;
+                }
+
+                printf("\n================ PRODUCT LIST ================\n");
+                printf("ID\tName\t\tPrice\tQuantity\tStatus\n");
+                printf("------------------------------------------------\n");
+
+                for (i = 0; i < n; i++) {
+
+                    if (p[i].quantity > 0)
+                        printf("%d\t%-15s %.2f\t%d\t\tAvailable\n",
+                               p[i].id,
+                               p[i].name,
+                               p[i].price,
+                               p[i].quantity);
+                    else
+                        printf("%d\t%-15s %.2f\t%d\t\tOut of Stock\n",
+                               p[i].id,
+                               p[i].name,
+                               p[i].price,
+                               p[i].quantity);
+                }
+
+                break;
+
+            case 3:
+                printf("\nEnter Product ID to search: ");
+                scanf("%d", &id);
+
+                found = 0;
+
+                for (i = 0; i < n; i++) {
+
+                    if (p[i].id == id) {
+
+                        printf("\nProduct Found!\n");
+                        printf("-------------------------\n");
+                        printf("Product ID       : %d\n", p[i].id);
+                        printf("Product Name     : %s\n", p[i].name);
+                        printf("Product Price    : %.2f\n", p[i].price);
+                        printf("Available Stock  : %d\n", p[i].quantity);
+
+                        if (p[i].quantity > 0)
+                            printf("Status           : Available\n");
+                        else
+                            printf("Status           : Out of Stock\n");
+
+                        found = 1;
+                        break;
+                    }
+                }
+
+                if (found == 0)
+                    printf("\nProduct not found!\n");
+
+                break;
+
+            case 4:
+                printf("\nEnter Product ID: ");
+                scanf("%d", &id);
+
+                found = 0;
+
+                for (i = 0; i < n; i++) {
+
+                    if (p[i].id == id) {
+
+                        found = 1;
+
+                        printf("\nProduct: %s\n", p[i].name);
+                        printf("Stock Available: %d\n", p[i].quantity);
+
+                        if (p[i].quantity > 0)
+                            printf("Result: Product is AVAILABLE.\n");
+                        else
+                            printf("Result: Product is NOT AVAILABLE.\n");
+
+                        break;
+                    }
+                }
+
+                if (found == 0)
+                    printf("Product not found!\n");
+
+                break;
+
+            case 5:
+                printf("\nEnter Product ID: ");
+                scanf("%d", &id);
+
+                found = 0;
+
+                for (i = 0; i < n; i++) {
+
+                    if (p[i].id == id) {
+
+                        found = 1;
+
+                        printf("Current Stock: %d\n", p[i].quantity);
+                        printf("Enter new quantity: ");
+                        scanf("%d", &quantity);
+
+                        if (quantity < 0) {
+                            printf("Quantity cannot be negative!\n");
+                        }
+                        else {
+                            p[i].quantity = quantity;
+                            printf("Stock updated successfully!\n");
+                        }
+
+                        break;
+                    }
+                }
+
+                if (found == 0)
+                    printf("Product not found!\n");
+
+                break;
+
+            case 6:
+                total = 0;
+
+                for (i = 0; i < n; i++) {
+                    total = total + (p[i].price * p[i].quantity);
+                }
+
+                printf("\nTotal Stock Value = %.2f\n", total);
+                break;
+
+            case 7:
+                printf("\nThank you for using Product Availability System!\n");
+                return 0;
+
+            default:
+                printf("\nInvalid choice! Please try again.\n");
+        }
+    }
+
+    return 0;
+}
